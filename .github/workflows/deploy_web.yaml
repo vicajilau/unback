@@ -33,14 +33,8 @@ jobs:
           channel: 'stable'
           cache: true
 
-      - name: 📦 Install Melos
-        run: dart pub global activate melos
-
       - name: Get dependencies
         run: flutter pub get
-
-      - name: Generate build_runner files
-        run: melos run build_runner
 
       - name: Build web
         run: flutter build web --wasm --base-href /${{ github.event.repository.name }}/
@@ -52,7 +46,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
         with:
-          path: "./example/build/web"
+          path: "./build/web"
           include-hidden-files: true
 
       - name: Deploy to GitHub Pages
