@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    name: Analyze, Format & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📚 Git Checkout
+        uses: actions/checkout@v6
+
+      - name: 🐦 Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: 📦 Install Melos
+        run: dart pub global activate melos
+
+      - name: 📥 Get Dependencies
+        run: flutter pub get
+
+      - name: 📝 Check Formatting
+        run: melos run format
+
+      - name: 🔍 Analyze Source Code
+        run: melos run analyze
+
+      - name: 🛠️ Generate Code (build_runner)
+        run: melos run build_runner
+
+      - name: 🧪 Run Tests
+        run: melos run test
