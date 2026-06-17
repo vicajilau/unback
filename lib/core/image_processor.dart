@@ -44,9 +44,7 @@ class ImageProcessor {
 
       // Calculate Euclidean distance in RGB space
       final double distance = sqrt(
-        pow(r - bgR, 2) +
-        pow(g - bgG, 2) +
-        pow(b - bgB, 2)
+        pow(r - bgR, 2) + pow(g - bgG, 2) + pow(b - bgB, 2),
       );
 
       if (distance < thresholdMin) {

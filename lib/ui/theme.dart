@@ -4,17 +4,17 @@ import 'package:flutter/material.dart';
 class AppTheme {
   // Brand colors
   static const Color background = Color(0xFF0F172A); // Slate 900
-  static const Color surface = Color(0xFF1E293B);    // Slate 800
+  static const Color surface = Color(0xFF1E293B); // Slate 800
   static const Color surfaceDark = Color(0xFF020617); // Slate 950
   static const Color surfaceLight = Color(0xFF334155); // Slate 700
-  
-  static const Color primary = Color(0xFF0EA5E9);    // Sky 500
-  static const Color secondary = Color(0xFF14B8A6);  // Teal 500
-  static const Color accent = Color(0xFF6366F1);     // Indigo 500
-  
-  static const Color textPrimary = Color(0xFFF8FAFC);   // Slate 50
+
+  static const Color primary = Color(0xFF0EA5E9); // Sky 500
+  static const Color secondary = Color(0xFF14B8A6); // Teal 500
+  static const Color accent = Color(0xFF6366F1); // Indigo 500
+
+  static const Color textPrimary = Color(0xFFF8FAFC); // Slate 50
   static const Color textSecondary = Color(0xFF94A3B8); // Slate 400
-  static const Color textMuted = Color(0xFF64748B);     // Slate 500
+  static const Color textMuted = Color(0xFF64748B); // Slate 500
 
   // Gradients
   static const LinearGradient primaryGradient = LinearGradient(
@@ -48,7 +48,7 @@ class AppTheme {
         surface: surface,
         error: Colors.redAccent,
       ),
-      
+
       // Sliders configuration
       sliderTheme: SliderThemeData(
         activeTrackColor: primary,
@@ -61,7 +61,7 @@ class AppTheme {
         thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 8),
         overlayShape: const RoundSliderOverlayShape(overlayRadius: 16),
       ),
-      
+
       // App Bar configuration
       appBarTheme: const AppBarTheme(
         backgroundColor: surfaceDark,
@@ -75,9 +75,9 @@ class AppTheme {
         ),
         iconTheme: IconThemeData(color: textPrimary),
       ),
-      
+
       // Card configuration
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: surface,
         elevation: 4,
         shape: RoundedRectangleBorder(
@@ -86,7 +86,7 @@ class AppTheme {
         ),
         clipBehavior: Clip.antiAlias,
       ),
-      
+
       // Button themes
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
@@ -113,15 +113,12 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          textStyle: const TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.bold,
-          ),
+          textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
         ),
       ),
-      
+
       // Dialog theme
-      dialogTheme: DialogTheme(
+      dialogTheme: DialogThemeData(
         backgroundColor: surface,
         elevation: 8,
         shape: RoundedRectangleBorder(
@@ -133,12 +130,9 @@ class AppTheme {
           fontSize: 20,
           fontWeight: FontWeight.bold,
         ),
-        contentTextStyle: const TextStyle(
-          color: textSecondary,
-          fontSize: 15,
-        ),
+        contentTextStyle: const TextStyle(color: textSecondary, fontSize: 15),
       ),
-      
+
       // Input decoration theme (for sliders or text fields)
       inputDecorationTheme: InputDecorationTheme(
         filled: true,

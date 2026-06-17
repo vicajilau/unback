@@ -8,7 +8,7 @@ void main() {
     test('removeBackground removes matching colors', () {
       // Create a 2x2 test image: top-left is red, others are green
       final testImage = img.Image(width: 2, height: 2, numChannels: 3);
-      
+
       // Set pixel values
       testImage.setPixelRgb(0, 0, 255, 0, 0); // Red (background to remove)
       testImage.setPixelRgb(1, 0, 0, 255, 0); // Green
