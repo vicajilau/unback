@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:image/image.dart' as img;
 import 'package:desktop_drop/desktop_drop.dart';
+import 'package:cross_file/cross_file.dart';
 
 import 'core/image_processor.dart';
 import 'ui/theme.dart';
@@ -71,26 +72,32 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
       if (result == null) return;
 
-      final Uint8List bytes = await result.xFile.readAsBytes();
-      await loadImage(bytes, result.xFile.name);
+      await loadImage(result.xFile);
     } catch (e) {
-      _showSnackBar('Error loading image: ${e.toString()}', isError: true);
+      _showSnackBar('Error picking image: ${e.toString()}', isError: true);
     }
   }
 
-  /// Loads and decodes the image bytes, then triggers processing.
-  Future<void> loadImage(Uint8List bytes, String fileName) async {
+  /// Loads and decodes the image file, then triggers processing.
+  Future<void> loadImage(XFile file) async {
     try {
       setState(() {
         _isProcessing = true;
-        _originalBytes = bytes;
         _processedBytes = null;
-        _fileName = fileName;
+        _fileName = file.name;
         _isEyedropperActive = false;
       });
 
+      final bytes = await file.readAsBytes();
+      setState(() {
+        _originalBytes = bytes;
+      });
+
       // Decode the image in a background thread to get size and pixels
-      final decoded = await compute(img.decodeImage, bytes);
+      final decoded = await compute(
+        (Uint8List data) => img.decodeImage(data),
+        bytes,
+      );
       if (decoded == null) {
         throw Exception('Could not decode image files');
       }
@@ -341,15 +348,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     mimeType == 'image/webp');
 
             if (hasValidExtension || hasValidMimeType) {
-              try {
-                final bytes = await file.readAsBytes();
-                await loadImage(bytes, file.name);
-              } catch (e) {
-                _showSnackBar(
-                  'Error loading dropped file: ${e.toString()}',
-                  isError: true,
-                );
-              }
+              await loadImage(file);
             } else {
               _showSnackBar(
                 'Unsupported file format. Please drop PNG, JPG, JPEG, or WebP.',

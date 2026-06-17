@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:image/image.dart' as img;
+import 'package:cross_file/cross_file.dart';
 import 'package:background_remover/main.dart';
 
 void main() {
@@ -29,8 +30,9 @@ void main() {
     testImage.setPixelRgb(0, 0, 255, 0, 0); // Red
     final bytes = Uint8List.fromList(img.encodePng(testImage));
 
-    // Load image
-    await state.loadImage(bytes, 'test.png');
+    // Load image via XFile
+    final file = XFile.fromData(bytes, name: 'test.png');
+    await state.loadImage(file);
     await tester.pumpAndSettle();
 
     // Verify initial values
