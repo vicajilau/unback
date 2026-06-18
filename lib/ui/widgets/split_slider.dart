@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
 
-/// A custom clipper to show only the left portion of a widget.
+/// A custom clipper to show either the left or right portion of a widget.
 class _SplitClipper extends CustomClipper<Rect> {
   final double splitRatio;
+  final bool clipLeft; // If true, keeps left side. If false, keeps right side.
 
-  _SplitClipper(this.splitRatio);
+  _SplitClipper({required this.splitRatio, required this.clipLeft});
 
   @override
   Rect getClip(Size size) {
-    return Rect.fromLTRB(0, 0, size.width * splitRatio, size.height);
+    if (clipLeft) {
+      return Rect.fromLTRB(0, 0, size.width * splitRatio, size.height);
+    } else {
+      return Rect.fromLTRB(size.width * splitRatio, 0, size.width, size.height);
+    }
   }
 
   @override
   bool shouldReclip(covariant _SplitClipper oldClipper) {
-    return oldClipper.splitRatio != splitRatio;
+    return oldClipper.splitRatio != splitRatio || oldClipper.clipLeft != clipLeft;
   }
 }
 
@@ -73,13 +78,18 @@ class _SplitSliderState extends State<SplitSlider> {
               child: Stack(
                 clipBehavior: Clip.none,
                 children: [
-                  // 1. Original Image (Right side / Background)
-                  Positioned.fill(child: widget.original),
+                  // 1. Original Image (Right side / Clipped Background)
+                  Positioned.fill(
+                    child: ClipRect(
+                      clipper: _SplitClipper(splitRatio: _splitRatio, clipLeft: false),
+                      child: widget.original,
+                    ),
+                  ),
 
                   // 2. Processed Image (Left side / Clipped Foreground)
                   Positioned.fill(
                     child: ClipRect(
-                      clipper: _SplitClipper(_splitRatio),
+                      clipper: _SplitClipper(splitRatio: _splitRatio, clipLeft: true),
                       child: widget.processed,
                     ),
                   ),
