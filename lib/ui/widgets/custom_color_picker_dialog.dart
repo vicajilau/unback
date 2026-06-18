@@ -9,7 +9,8 @@ class CustomColorPickerDialog extends StatefulWidget {
   const CustomColorPickerDialog({super.key, required this.initialColor});
 
   @override
-  State<CustomColorPickerDialog> createState() => _CustomColorPickerDialogState();
+  State<CustomColorPickerDialog> createState() =>
+      _CustomColorPickerDialogState();
 }
 
 class _CustomColorPickerDialogState extends State<CustomColorPickerDialog> {

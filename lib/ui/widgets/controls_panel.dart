@@ -418,11 +418,7 @@ class ControlsPanel extends StatelessWidget {
             ],
           ),
           child: isSelected
-              ? const Icon(
-                  Icons.check_rounded,
-                  color: Colors.white,
-                  size: 14,
-                )
+              ? const Icon(Icons.check_rounded, color: Colors.white, size: 14)
               : null,
         ),
       ),
@@ -460,8 +456,8 @@ class ControlsPanel extends StatelessWidget {
             Icons.palette_rounded,
             color: isSelected
                 ? (customPreviewColor.computeLuminance() > 0.5
-                    ? Colors.black
-                    : Colors.white)
+                      ? Colors.black
+                      : Colors.white)
                 : AppTheme.textSecondary,
             size: 14,
           ),

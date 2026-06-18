@@ -39,7 +39,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
   bool _isEyedropperActive = false;
   String _viewMode = 'split'; // 'split', 'original', 'processed'
   String _previewBackground = 'transparent'; // 'transparent', 'white', 'black'
-  Color _customPreviewColor = const Color(0xFF8B5CF6); // Default custom color (Purple)
+  Color _customPreviewColor = const Color(
+    0xFF8B5CF6,
+  ); // Default custom color (Purple)
   bool _isDragging = false;
   String _loadingStatus = '';
 
