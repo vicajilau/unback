@@ -1,0 +1,169 @@
+name: Publish Microsoft Store
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+    branches:
+      - feat/automated-release-notes
+  workflow_dispatch:
+
+jobs:
+  publish_windows_release:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - uses: microsoft/setup-msstore-cli@v1.3
+      - run: msstore reconfigure --tenantId ${{ secrets.PARTNER_CENTER_TENANT_ID }} --sellerId ${{ secrets.PARTNER_CENTER_SELLER_ID }} --clientId ${{ secrets.PARTNER_CENTER_CLIENT_ID }} --clientSecret ${{ secrets.PARTNER_CENTER_CLIENT_SECRET }}
+
+      - name: Install Dart dependencies
+        run: flutter pub get
+
+      - name: Fetch current Microsoft Store submission metadata via REST
+        shell: pwsh
+        env:
+          MS_STORE_APP_ID: ${{ secrets.MS_STORE_APP_ID }}
+          PARTNER_CENTER_TENANT_ID: ${{ secrets.PARTNER_CENTER_TENANT_ID }}
+          PARTNER_CENTER_CLIENT_ID: ${{ secrets.PARTNER_CENTER_CLIENT_ID }}
+          PARTNER_CENTER_CLIENT_SECRET: ${{ secrets.PARTNER_CENTER_CLIENT_SECRET }}
+        run: |
+          Write-Host "Authenticating with Microsoft Store API..."
+          $tokenResponse = Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$($env:PARTNER_CENTER_TENANT_ID)/oauth2/v2.0/token" -ContentType 'application/x-www-form-urlencoded' -Body @{
+            grant_type    = 'client_credentials'
+            client_id     = $env:PARTNER_CENTER_CLIENT_ID
+            client_secret = $env:PARTNER_CENTER_CLIENT_SECRET
+            scope         = 'https://manage.devcenter.microsoft.com/.default'
+          }
+          $headers = @{
+            Authorization  = "Bearer $($tokenResponse.access_token)"
+            TenantId       = $env:PARTNER_CENTER_TENANT_ID
+            'Content-Type' = 'application/json'
+          }
+          $apiBaseUrl = "https://manage.devcenter.microsoft.com/v1.0/my/applications/$($env:MS_STORE_APP_ID)"
+
+          Write-Host "Fetching application info..."
+          $application = Invoke-RestMethod -Method Get -Uri $apiBaseUrl -Headers $headers
+
+          $submissionId = $null
+          if ($application.PendingApplicationSubmission -and -not [string]::IsNullOrWhiteSpace($application.PendingApplicationSubmission.Id)) {
+            $submissionId = $application.PendingApplicationSubmission.Id
+          }
+
+          if ([string]::IsNullOrWhiteSpace($submissionId)) {
+            Write-Host "Creating new submission..."
+            $createdSubmission = Invoke-RestMethod -Method Post -Uri "$apiBaseUrl/submissions" -Headers $headers
+            $submissionId = $createdSubmission.Id ? $createdSubmission.Id : $createdSubmission.id
+          }
+
+          Write-Host "Fetching full submission metadata for $submissionId..."
+          $submission = Invoke-RestMethod -Method Get -Uri "$apiBaseUrl/submissions/$submissionId" -Headers $headers
+          
+          # ConvertTo-Json limits depth by default; -Depth 10 ensures we capture the whole structure
+          $submission | ConvertTo-Json -Depth 10 | Out-File -Encoding utf8 .\distribution\windows\current_metadata.json
+          Write-Host "Saved current metadata."
+          
+          # Export submission URL for the next step
+          "MS_SUBMISSION_URL=$apiBaseUrl/submissions/$submissionId" | Out-File -FilePath $env:GITHUB_ENV -Append
+
+      - name: Generate Windows release notes metadata
+        run: dart distribution/windows/generate_windows_release_notes.dart --version=${{ github.ref_name }}
+
+      - name: Create MSIX package
+        run: msstore package .
+
+      - name: Update Metadata, Upload Package, and Commit via REST
+        shell: pwsh
+        env:
+          PARTNER_CENTER_TENANT_ID: ${{ secrets.PARTNER_CENTER_TENANT_ID }}
+          PARTNER_CENTER_CLIENT_ID: ${{ secrets.PARTNER_CENTER_CLIENT_ID }}
+          PARTNER_CENTER_CLIENT_SECRET: ${{ secrets.PARTNER_CENTER_CLIENT_SECRET }}
+        run: |
+          $metaContent = Get-Content -Raw .\distribution\windows\update_metadata.json
+          if ([string]::IsNullOrWhiteSpace($metaContent)) { Write-Host "💥 metadata file is empty"; exit 1 }
+
+          # Parse JSON to modify applicationPackages
+          $metaObj = $metaContent | ConvertFrom-Json -Depth 10
+
+          # Replace the existing package list so reruns do not accumulate paused/validated drafts.
+          $metaObj.applicationPackages = @(
+            @{
+              fileStatus = "PendingUpload"
+              fileName = "unback.msix"
+            }
+          )
+
+          # Save back as JSON
+          $metaObj | ConvertTo-Json -Depth 10 | Out-File -Encoding utf8 .\distribution\windows\update_metadata.json
+
+          Write-Host "Authenticating with Microsoft Store API..."
+          $tokenResponse = Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$($env:PARTNER_CENTER_TENANT_ID)/oauth2/v2.0/token" -ContentType 'application/x-www-form-urlencoded' -Body @{
+            grant_type    = 'client_credentials'
+            client_id     = $env:PARTNER_CENTER_CLIENT_ID
+            client_secret = $env:PARTNER_CENTER_CLIENT_SECRET
+            scope         = 'https://manage.devcenter.microsoft.com/.default'
+          }
+          $headers = @{
+            Authorization  = "Bearer $($tokenResponse.access_token)"
+            TenantId       = $env:PARTNER_CENTER_TENANT_ID
+            'Content-Type' = 'application/json'
+          }
+
+          Write-Host "PUT to $env:MS_SUBMISSION_URL (Updating metadata and declaring new package)..."
+          try {
+            Invoke-RestMethod -Method Put -Uri $env:MS_SUBMISSION_URL -Headers $headers -InFile .\distribution\windows\update_metadata.json -ContentType 'application/json' -ErrorAction Stop
+            Write-Host "✅ Metadata successfully updated via REST API."
+          } catch {
+            Write-Host "💥 PUT failed: $($_.Exception.Message)"
+            if ($_.ErrorDetails) { Write-Host "Error details message: $($_.ErrorDetails.Message)" }
+            elseif ($_.Exception.Response) {
+              try {
+                $reader = New-Object System.IO.StreamReader($_.Exception.Response.Content.ReadAsStream())
+                Write-Host "Response body: $($reader.ReadToEnd())"
+              } catch {}
+            }
+            exit 1
+          }
+
+          # --- UPLOAD PACKAGE ---
+          $msixPath = "build\windows\x64\runner\Release\unback.msix"
+          $zipPath = "bundle.zip"
+          if (-not (Test-Path $msixPath)) { Write-Host "💥 MSIX file not found at $msixPath"; exit 1 }
+
+          Write-Host "Compressing $msixPath to $zipPath..."
+          Compress-Archive -Path $msixPath -DestinationPath $zipPath -Force
+
+          $uploadUrl = $metaObj.fileUploadUrl
+          if ([string]::IsNullOrWhiteSpace($uploadUrl)) { Write-Host "💥 fileUploadUrl is missing from submission data!"; exit 1 }
+
+          Write-Host "Uploading $zipPath to Azure Blob Storage..."
+          $uploadHeaders = @{ "x-ms-blob-type" = "BlockBlob" }
+          
+          try {
+            Invoke-RestMethod -Method Put -Uri $uploadUrl -Headers $uploadHeaders -InFile $zipPath -ErrorAction Stop
+            Write-Host "✅ Package uploaded successfully."
+          } catch {
+            Write-Host "💥 Upload failed: $($_.Exception.Message)"
+            exit 1
+          }
+
+          # --- COMMIT SUBMISSION ---
+          Write-Host "Committing submission..."
+          try {
+            Invoke-RestMethod -Method Post -Uri "$($env:MS_SUBMISSION_URL)/commit" -Headers $headers -ErrorAction Stop
+            Write-Host "✅ Submission committed successfully! It will now be processed by the Microsoft Store."
+          } catch {
+            Write-Host "💥 Commit failed: $($_.Exception.Message)"
+            if ($_.Exception.Response) {
+              try {
+                $reader = New-Object System.IO.StreamReader($_.Exception.Response.Content.ReadAsStream())
+                Write-Host "Response body: $($reader.ReadToEnd())"
+              } catch {}
+            }
+            exit 1
+          }

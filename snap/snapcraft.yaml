@@ -1,0 +1,54 @@
+name: unback-remover
+version: "1.0.0"
+summary: Unback — Offline Background Remover
+description: |
+  An offline tool to remove image backgrounds with high performance.
+base: core24
+confinement: strict
+grade: stable
+
+apps:
+  unback-remover:
+    command: background_remover
+    extensions: [gnome]
+    plugs:
+      - network
+      - home
+    slots:
+      - dbus-unback-remover
+    desktop: usr/share/applications/unback-remover.desktop
+
+slots:
+  dbus-unback-remover:
+    interface: dbus
+    bus: session
+    name: es.victorcarreras.background_remover
+
+parts:
+  unback-remover:
+    plugin: flutter
+    source: .
+    flutter-target: lib/main.dart
+    build-packages:
+      - lld
+      - llvm
+    build-snaps:
+      - flutter
+    build-environment:
+      - PUB_CACHE: "$SNAPCRAFT_PART_BUILD/.pub-cache"
+    override-build: |
+      export PATH=$PATH:/snap/bin
+      flutter pub get
+      craftctl default
+
+  desktop-file:
+    plugin: dump
+    source: snap/gui
+    organize:
+      unback-remover.desktop: usr/share/applications/unback-remover.desktop
+
+  icon:
+    plugin: dump
+    source: snap/gui
+    organize:
+      unback-remover.png: usr/share/icons/hicolor/256x256/apps/unback-remover.png

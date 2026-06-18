@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=Unback
+Comment=Offline Background Remover
+Exec=unback-remover %U
+Icon=unback-remover.png
+Terminal=false
+Type=Application
+Categories=Graphics;Utility;

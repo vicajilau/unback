@@ -45,6 +45,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: ^0.14.2
+  msix: ^3.16.12
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -94,3 +95,12 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+msix_config:
+  display_name: Unback
+  identity_name: vicajilau.Unback
+  publisher: CN=B0585DC6-ACE7-4F2B-956B-CDC4AFBAFCCF
+  publisher_display_name: vicajilau
+  logo_path: .github\assets\logo_transparent.png
+  capabilities: internetClient
+  store: true
