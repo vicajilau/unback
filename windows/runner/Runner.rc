@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "es.victorcarreras" "\0"
-            VALUE "FileDescription", "background_remover" "\0"
+            VALUE "FileDescription", "Unback" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "background_remover" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2026 es.victorcarreras. All rights reserved." "\0"
             VALUE "OriginalFilename", "background_remover.exe" "\0"
-            VALUE "ProductName", "background_remover" "\0"
+            VALUE "ProductName", "Unback" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

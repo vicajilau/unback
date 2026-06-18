@@ -1,6 +1,6 @@
 {
-    "name": "background_remover",
-    "short_name": "background_remover",
+    "name": "Unback",
+    "short_name": "Unback",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#ffffff",
