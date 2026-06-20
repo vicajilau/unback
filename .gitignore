@@ -58,3 +58,6 @@ lib/l10n/untranslated_messages.json
 # Generated Windows release notes metadata
 /distribution/windows/current_metadata.json
 /distribution/windows/update_metadata.json
+
+# Linux Snap packages
+*.snap
