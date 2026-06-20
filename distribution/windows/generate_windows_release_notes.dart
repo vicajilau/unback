@@ -175,7 +175,10 @@ Map<String, dynamic> _readConfig(File notesFile) {
 _ProjectInfo _readProjectInfo() {
   final File pubspec = File('pubspec.yaml');
   if (!pubspec.existsSync()) {
-    return const _ProjectInfo(title: 'Unback', description: 'Unback - Offline Background Remover');
+    return const _ProjectInfo(
+      title: 'Unback',
+      description: 'Unback - Offline Background Remover',
+    );
   }
 
   final List<String> lines = pubspec.readAsLinesSync();
@@ -206,7 +209,10 @@ _ProjectInfo _readProjectInfo() {
   }
 
   if (projectName == 'background_remover') {
-    return const _ProjectInfo(title: 'Unback', description: 'Unback - Offline Background Remover');
+    return const _ProjectInfo(
+      title: 'Unback',
+      description: 'Unback - Offline Background Remover',
+    );
   }
 
   final String title = _titleCase(projectName ?? 'Unback');
