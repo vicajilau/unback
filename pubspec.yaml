@@ -108,3 +108,4 @@ msix_config:
   capabilities: internetClient
   store: true
   languages: ar-SA, ca-ES, de-DE, el-GR, en-US, es-ES, eu-ES, fr-FR, gl-ES, hi-IN, it-IT, ja-JP, ka-GE, ko-KR, pt-PT, ru-RU, uk-UA, zh-CN
+  output_name: unback
