@@ -115,7 +115,8 @@ void main(List<String> args) {
     final Map<String, dynamic> baseListing =
         localeListing[baseListingKey] as Map<String, dynamic>;
 
-    _setValueCaseInsensitive(baseListing, 'Title', projectInfo.title);
+    final String localizedTitle = _getLocalizedTitle(locale);
+    _setValueCaseInsensitive(baseListing, 'Title', localizedTitle);
     _setValueCaseInsensitive(
       baseListing,
       'Description',
@@ -325,4 +326,46 @@ class _ProjectInfo {
 
   final String title;
   final String description;
+}
+
+String _getLocalizedTitle(String locale) {
+  switch (locale) {
+    case 'ar-SA':
+      return 'Unback: إزالة الخلفية';
+    case 'ca-ES':
+      return 'Unback: Eliminador de fons';
+    case 'de-DE':
+      return 'Unback: Hintergrund-Entferner';
+    case 'el-GR':
+      return 'Unback: Αφαίρεση φόντου';
+    case 'es-ES':
+      return 'Unback: Eliminador de fondos';
+    case 'eu-ES':
+      return 'Unback: Kendu atzeko planoa';
+    case 'fr-FR':
+      return "Unback: Effacer l'arrière-plan";
+    case 'gl-ES':
+      return 'Unback: Eliminador de fondos';
+    case 'hi-IN':
+      return 'Unback: बैकग्राउंड हटाएं';
+    case 'it-IT':
+      return 'Unback: Rimuovi Sfondo';
+    case 'ja-JP':
+      return 'Unback: 背景切り抜き';
+    case 'ka-GE':
+      return 'Unback: ფონის მოცილება';
+    case 'ko-KR':
+      return 'Unback: 배경 제거';
+    case 'pt-PT':
+      return 'Unback: Removedor de Fundo';
+    case 'ru-RU':
+      return 'Unback: Удаление фона';
+    case 'uk-UA':
+      return 'Unback: Видалення фону';
+    case 'zh-CN':
+      return 'Unback: 背景消除';
+    case 'en-US':
+    default:
+      return 'Unback: Background Remover';
+  }
 }
