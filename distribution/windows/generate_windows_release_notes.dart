@@ -176,7 +176,7 @@ _ProjectInfo _readProjectInfo() {
   final File pubspec = File('pubspec.yaml');
   if (!pubspec.existsSync()) {
     return const _ProjectInfo(
-      title: 'Unback',
+      title: 'Unback: Background Remover',
       description: 'Unback - Offline Background Remover',
     );
   }
@@ -210,7 +210,7 @@ _ProjectInfo _readProjectInfo() {
 
   if (projectName == 'background_remover') {
     return const _ProjectInfo(
-      title: 'Unback',
+      title: 'Unback: Background Remover',
       description: 'Unback - Offline Background Remover',
     );
   }
