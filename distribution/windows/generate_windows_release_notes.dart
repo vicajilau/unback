@@ -101,7 +101,7 @@ void main(List<String> args) {
   if (currentMetadata[allowTargetKey] is Map<String, dynamic>) {
     final Map<String, dynamic> allowTarget = currentMetadata[allowTargetKey] as Map<String, dynamic>;
     final String desktopKey = allowTarget.keys.firstWhere((k) => k.toLowerCase() == 'desktop', orElse: () => 'Desktop');
-    allowTarget[desktopKey] ??= false;
+    allowTarget[desktopKey] ??= true;
     final String mobileKey = allowTarget.keys.firstWhere((k) => k.toLowerCase() == 'mobile', orElse: () => 'Mobile');
     allowTarget[mobileKey] ??= false;
     final String xboxKey = allowTarget.keys.firstWhere((k) => k.toLowerCase() == 'xbox', orElse: () => 'Xbox');
