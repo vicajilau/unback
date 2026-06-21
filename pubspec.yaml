@@ -101,7 +101,7 @@ flutter:
 
 msix_config:
   display_name: Unback
-  identity_name: vicajilau.Unback
+  identity_name: vicajilau.UnbackBackgroundRemover
   publisher: CN=B0585DC6-ACE7-4F2B-956B-CDC4AFBAFCCF
   publisher_display_name: vicajilau
   logo_path: .github\assets\logo_transparent.png

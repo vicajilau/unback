@@ -4,7 +4,7 @@ on:
     tags:
       - 'v*.*.*'
     branches:
-      - feat/automated-release-notes
+      - main
   workflow_dispatch:
 
 jobs:
