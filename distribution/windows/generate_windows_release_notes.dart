@@ -89,7 +89,8 @@ void main(List<String> args) {
     (k) => k.toLowerCase() == 'applicationcategory',
     orElse: () => 'applicationCategory',
   );
-  if (currentMetadata[categoryKey] == 'NotSet' || currentMetadata[categoryKey] == null) {
+  if (currentMetadata[categoryKey] == 'NotSet' ||
+      currentMetadata[categoryKey] == null) {
     currentMetadata[categoryKey] = 'PhotoAndVideo';
   }
 
@@ -99,14 +100,27 @@ void main(List<String> args) {
   );
   currentMetadata[allowTargetKey] ??= <String, dynamic>{};
   if (currentMetadata[allowTargetKey] is Map<String, dynamic>) {
-    final Map<String, dynamic> allowTarget = currentMetadata[allowTargetKey] as Map<String, dynamic>;
-    final String desktopKey = allowTarget.keys.firstWhere((k) => k.toLowerCase() == 'desktop', orElse: () => 'Desktop');
+    final Map<String, dynamic> allowTarget =
+        currentMetadata[allowTargetKey] as Map<String, dynamic>;
+    final String desktopKey = allowTarget.keys.firstWhere(
+      (k) => k.toLowerCase() == 'desktop',
+      orElse: () => 'Desktop',
+    );
     allowTarget[desktopKey] ??= true;
-    final String mobileKey = allowTarget.keys.firstWhere((k) => k.toLowerCase() == 'mobile', orElse: () => 'Mobile');
+    final String mobileKey = allowTarget.keys.firstWhere(
+      (k) => k.toLowerCase() == 'mobile',
+      orElse: () => 'Mobile',
+    );
     allowTarget[mobileKey] ??= false;
-    final String xboxKey = allowTarget.keys.firstWhere((k) => k.toLowerCase() == 'xbox', orElse: () => 'Xbox');
+    final String xboxKey = allowTarget.keys.firstWhere(
+      (k) => k.toLowerCase() == 'xbox',
+      orElse: () => 'Xbox',
+    );
     allowTarget[xboxKey] ??= false;
-    final String holoKey = allowTarget.keys.firstWhere((k) => k.toLowerCase() == 'holographic', orElse: () => 'Holographic');
+    final String holoKey = allowTarget.keys.firstWhere(
+      (k) => k.toLowerCase() == 'holographic',
+      orElse: () => 'Holographic',
+    );
     allowTarget[holoKey] ??= false;
   }
 
