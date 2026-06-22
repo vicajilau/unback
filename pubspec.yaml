@@ -106,5 +106,5 @@ msix_config:
   publisher_display_name: vicajilau
   logo_path: .github\assets\logo_transparent.png
   store: true
-  languages: ar, ca, de, el, en, es, eu, fr, gl, hi, it, ja, ka, ko, pt, ru, uk, zh
+  languages: ar-SA, ca-ES, de-DE, el-GR, en-US, es-ES, eu-ES, fr-FR, gl-ES, hi-IN, it-IT, ja-JP, ka-GE, ko-KR, pt-PT, ru-RU, uk-UA, zh-CN
   output_name: unback
