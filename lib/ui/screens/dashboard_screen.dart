@@ -1,9 +1,10 @@
 // ignore_for_file: avoid_print
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:desktop_drop/desktop_drop.dart';
 import 'package:cross_file/cross_file.dart';
+import 'package:pasteboard/pasteboard.dart';
 
 import '../../core/image_processor.dart';
 import 'package:background_remover/l10n/app_localizations.dart';
@@ -158,6 +159,34 @@ class _DashboardScreenState extends State<DashboardScreen> {
         _isProcessing = false;
         _loadingStatus = '';
       });
+    }
+  }
+
+  /// Obtiene la imagen del portapapeles y la procesa directamente.
+  Future<void> _pasteImageFromClipboard() async {
+    try {
+      final imageBytes = await Pasteboard.image;
+      if (!mounted) return;
+      if (imageBytes != null) {
+        final xFile = XFile.fromData(
+          imageBytes,
+          name: 'clipboard_image.png',
+          mimeType: 'image/png',
+        );
+        await loadImage(xFile);
+      } else {
+        final isEs = AppLocalizations.of(context).localeName == 'es';
+        final errorMsg = isEs 
+            ? 'No hay ninguna imagen en el portapapeles' 
+            : 'No image found in clipboard';
+        _showSnackBar(errorMsg, isError: true);
+      }
+    } catch (e) {
+      if (!mounted) return;
+      _showSnackBar(
+        AppLocalizations.of(context).errorLoadingImage(e.toString()),
+        isError: true,
+      );
     }
   }
 
@@ -361,7 +390,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final bool isDesktop = screenWidth >= 800;
     final l10n = AppLocalizations.of(context);
 
-    return Scaffold(
+    return CallbackShortcuts(
+      bindings: {
+        const SingleActivator(LogicalKeyboardKey.keyV, control: true): _pasteImageFromClipboard,
+        const SingleActivator(LogicalKeyboardKey.keyV, meta: true): _pasteImageFromClipboard,
+      },
+      child: Focus(
+        autofocus: true,
+        child: Scaffold(
       appBar: AppBar(
         title: Text(l10n.appTitle),
         actions: [
@@ -439,7 +475,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ),
                     )
                   : _originalBytes == null
-                  ? UploadPrompt(onPickImage: _pickImage)
+                  ? UploadPrompt(
+                      onPickImage: _pickImage,
+                      onPasteImage: _pasteImageFromClipboard,
+                    )
                   : isDesktop
                   ? Row(
                       children: [
@@ -556,6 +595,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ],
         ),
       ),
-    );
+    ),
+  ),
+);
   }
 }

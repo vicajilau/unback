@@ -5,8 +5,13 @@ import '../theme.dart';
 /// The initial screen content inviting the user to pick or drop an image.
 class UploadPrompt extends StatelessWidget {
   final VoidCallback onPickImage;
+  final VoidCallback? onPasteImage;
 
-  const UploadPrompt({super.key, required this.onPickImage});
+  const UploadPrompt({
+    super.key,
+    required this.onPickImage,
+    this.onPasteImage,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -78,10 +83,27 @@ class UploadPrompt extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 24),
-                      ElevatedButton.icon(
-                        onPressed: onPickImage,
-                        icon: const Icon(Icons.file_upload),
-                        label: Text(l10n.chooseFile),
+                      Wrap(
+                        spacing: 12,
+                        runSpacing: 12,
+                        alignment: WrapAlignment.center,
+                        children: [
+                          ElevatedButton.icon(
+                            onPressed: onPickImage,
+                            icon: const Icon(Icons.file_upload),
+                            label: Text(l10n.chooseFile),
+                          ),
+                          if (onPasteImage != null)
+                            OutlinedButton.icon(
+                              onPressed: onPasteImage,
+                              icon: const Icon(Icons.content_paste),
+                              label: Text(
+                                AppLocalizations.of(context).localeName == 'es'
+                                    ? 'Pegar imagen'
+                                    : 'Paste image',
+                              ),
+                            ),
+                        ],
                       ),
                     ],
                   ),
