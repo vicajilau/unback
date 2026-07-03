@@ -72,7 +72,7 @@ jobs:
         run: flutter build ipa --release --export-options-plist=ios/Runner/ExportOptions.plist
 
       - name: Upload ipa to Artifacts
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: ios-release-artifacts
           if-no-files-found: error
