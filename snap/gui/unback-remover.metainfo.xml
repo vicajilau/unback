@@ -4,5 +4,11 @@
   <name>Unback</name>
   <summary>Unback — Offline Background Remover</summary>
   <releases>
+  
+    <release version="1.1.0" date="2026-07-03">
+      <description>
+        <p>Added support for pasting images directly from the clipboard. General improvements and bug fixes.</p>
+      </description>
+    </release>
   </releases>
 </component>

@@ -1,4 +1,24 @@
 {
+  "1.1.0": {
+    "ar-SA": "تمت إضافة دعم لصق الصور مباشرة من الحافظة. تحسينات عامة وإصلاحات للأخطاء.",
+    "ca-ES": "S'ha afegit suport per enganxar imatges directament des del porta-retalls. Millores generals i correcció d'errors.",
+    "de-DE": "Unterstützung für das direkte Einfügen von Bildern aus der Zwischenablage hinzugefügt. Allgemeine Verbesserungen und Fehlerbehebungen.",
+    "el-GR": "Προστέθηκε υποστήριξη για επικόλληση εικόνων απευθείας από το πρόχειρο. Γενικές βελτιώσεις και διορθώσεις σφαλμάτων.",
+    "en-US": "Added support for pasting images directly from the clipboard. General improvements and bug fixes.",
+    "es-ES": "Añadida compatibilidad para pegar imágenes directamente desde el portapapeles. Mejoras generales y corrección de errores.",
+    "eu-ES": "Portapapereko irudiak zuzenean itsasteko laguntza gehitu da. Hobekuntza orokorrak eta akatsen zuzenketak.",
+    "fr-FR": "Ajout de la prise en charge du collage d'images directement depuis le presse-papiers. Améliorations générales et corrections de bugs.",
+    "gl-ES": "Engadido soporte para pegar imaxes directamente desde o portapapeis. Melloras xerais e corrección de erros.",
+    "hi-IN": "क्लिपボード से सीधे छवियों को चिपकाने के लिए समर्थन जोड़ा गया। सामान्य सुधार और बग फिक्स।",
+    "it-IT": "Aggiunto il supporto per incollare le immagini direttamente dagli appunti. Miglioramenti generali e correzioni di bug.",
+    "ja-JP": "クリップボードから画像を直接貼り付ける機能を追加しました。一般的な改善とバグ修正。",
+    "ka-GE": "დაემატა გაცვლის ბუფერიდან (clipboard) სურათების პირდაპირ ჩასმის მხარდაჭერა. ზოგადი გაუმჯობესებები და შეცდომების გამოსწორება.",
+    "ko-KR": "클립보드에서 이미지를 직접 붙여넣는 지원이 추가되었습니다. 일반적인 개선 및 버그 수정.",
+    "pt-PT": "Adicionado suporte para colar imagens diretamente da área de transferência. Melhorias gerais e correções de erros.",
+    "ru-RU": "Добавлена поддержка вставки изображений напрямую из буфера обмена. Общие улучшения и исправления ошибок.",
+    "uk-UA": "Додано підтримку вставки зображень безпосередньо з буфера обміну. Загальні покращення та виправлення помилок.",
+    "zh-CN": "增加了直接从剪贴板粘贴图像的支持。常规改进和错误修复。"
+  },
   "1.0.0": {
     "ar-SA": "الإصدار الأول من Unback. إزالة خلفية الصور بدون إنترنت بشكل آمن وسريع وبأداء عالٍ.",
     "ca-ES": "Llançament inicial d'Unback. Eliminació de fons fora de línia, segura i d'alt rendiment.",
