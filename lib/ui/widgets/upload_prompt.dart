@@ -7,11 +7,7 @@ class UploadPrompt extends StatelessWidget {
   final VoidCallback onPickImage;
   final VoidCallback? onPasteImage;
 
-  const UploadPrompt({
-    super.key,
-    required this.onPickImage,
-    this.onPasteImage,
-  });
+  const UploadPrompt({super.key, required this.onPickImage, this.onPasteImage});
 
   @override
   Widget build(BuildContext context) {

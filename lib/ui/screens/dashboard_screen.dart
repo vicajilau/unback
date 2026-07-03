@@ -176,8 +176,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         await loadImage(xFile);
       } else {
         final isEs = AppLocalizations.of(context).localeName == 'es';
-        final errorMsg = isEs 
-            ? 'No hay ninguna imagen en el portapapeles' 
+        final errorMsg = isEs
+            ? 'No hay ninguna imagen en el portapapeles'
             : 'No image found in clipboard';
         _showSnackBar(errorMsg, isError: true);
       }
@@ -392,211 +392,218 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     return CallbackShortcuts(
       bindings: {
-        const SingleActivator(LogicalKeyboardKey.keyV, control: true): _pasteImageFromClipboard,
-        const SingleActivator(LogicalKeyboardKey.keyV, meta: true): _pasteImageFromClipboard,
+        const SingleActivator(LogicalKeyboardKey.keyV, control: true):
+            _pasteImageFromClipboard,
+        const SingleActivator(LogicalKeyboardKey.keyV, meta: true):
+            _pasteImageFromClipboard,
       },
       child: Focus(
         autofocus: true,
         child: Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.appTitle),
-        actions: [
-          if (_originalBytes != null)
-            IconButton(
-              tooltip: l10n.resetTooltip,
-              icon: const Icon(Icons.refresh),
-              onPressed: resetAll,
-            ),
-        ],
-      ),
-      body: DropTarget(
-        onDragEntered: (detail) {
-          setState(() {
-            _isDragging = true;
-          });
-        },
-        onDragExited: (detail) {
-          setState(() {
-            _isDragging = false;
-          });
-        },
-        onDragDone: (detail) async {
-          setState(() {
-            _isDragging = false;
-          });
-          if (detail.files.isNotEmpty) {
-            final file = detail.files.first;
-            final name = file.name.toLowerCase();
-            final hasValidExtension =
-                name.endsWith('.png') ||
-                name.endsWith('.jpg') ||
-                name.endsWith('.jpeg') ||
-                name.endsWith('.webp');
+          appBar: AppBar(
+            title: Text(l10n.appTitle),
+            actions: [
+              if (_originalBytes != null)
+                IconButton(
+                  tooltip: l10n.resetTooltip,
+                  icon: const Icon(Icons.refresh),
+                  onPressed: resetAll,
+                ),
+            ],
+          ),
+          body: DropTarget(
+            onDragEntered: (detail) {
+              setState(() {
+                _isDragging = true;
+              });
+            },
+            onDragExited: (detail) {
+              setState(() {
+                _isDragging = false;
+              });
+            },
+            onDragDone: (detail) async {
+              setState(() {
+                _isDragging = false;
+              });
+              if (detail.files.isNotEmpty) {
+                final file = detail.files.first;
+                final name = file.name.toLowerCase();
+                final hasValidExtension =
+                    name.endsWith('.png') ||
+                    name.endsWith('.jpg') ||
+                    name.endsWith('.jpeg') ||
+                    name.endsWith('.webp');
 
-            final mimeType = file.mimeType?.toLowerCase();
-            final hasValidMimeType =
-                mimeType != null &&
-                (mimeType == 'image/png' ||
-                    mimeType == 'image/jpeg' ||
-                    mimeType == 'image/webp');
+                final mimeType = file.mimeType?.toLowerCase();
+                final hasValidMimeType =
+                    mimeType != null &&
+                    (mimeType == 'image/png' ||
+                        mimeType == 'image/jpeg' ||
+                        mimeType == 'image/webp');
 
-            if (hasValidExtension || hasValidMimeType) {
-              await loadImage(file);
-            } else {
-              if (mounted) {
-                _showSnackBar(l10n.unsupportedFormat, isError: true);
+                if (hasValidExtension || hasValidMimeType) {
+                  await loadImage(file);
+                } else {
+                  if (mounted) {
+                    _showSnackBar(l10n.unsupportedFormat, isError: true);
+                  }
+                }
               }
-            }
-          }
-        },
-        child: Stack(
-          children: [
-            Container(
-              decoration: const BoxDecoration(
-                gradient: AppTheme.surfaceGradient,
-              ),
-              child: _isProcessing && _originalBytes == null
-                  ? Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const CircularProgressIndicator(),
-                          const SizedBox(height: 16),
-                          Text(
-                            _loadingStatus.isNotEmpty
-                                ? _getLoadingStatusText(context)
-                                : l10n.processing,
-                            style: const TextStyle(
-                              color: AppTheme.textSecondary,
-                              fontSize: 16,
+            },
+            child: Stack(
+              children: [
+                Container(
+                  decoration: const BoxDecoration(
+                    gradient: AppTheme.surfaceGradient,
+                  ),
+                  child: _isProcessing && _originalBytes == null
+                      ? Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const CircularProgressIndicator(),
+                              const SizedBox(height: 16),
+                              Text(
+                                _loadingStatus.isNotEmpty
+                                    ? _getLoadingStatusText(context)
+                                    : l10n.processing,
+                                style: const TextStyle(
+                                  color: AppTheme.textSecondary,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      : _originalBytes == null
+                      ? UploadPrompt(
+                          onPickImage: _pickImage,
+                          onPasteImage: _pasteImageFromClipboard,
+                        )
+                      : isDesktop
+                      ? Row(
+                          children: [
+                            Expanded(
+                              flex: 3,
+                              child: PreviewArea(
+                                originalBytes: _originalBytes!,
+                                processedBytes: _processedBytes,
+                                decodedImg: _decodedImg,
+                                imageWidth: _imageWidth,
+                                imageHeight: _imageHeight,
+                                viewMode: _viewMode,
+                                previewBackground: _previewBackground,
+                                customPreviewColor: _customPreviewColor,
+                                isEyedropperActive: _isEyedropperActive,
+                                isProcessing: _isProcessing,
+                                loadingStatus: _getLoadingStatusText(context),
+                                onPickColorAt: _pickColorAt,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    )
-                  : _originalBytes == null
-                  ? UploadPrompt(
-                      onPickImage: _pickImage,
-                      onPasteImage: _pasteImageFromClipboard,
-                    )
-                  : isDesktop
-                  ? Row(
-                      children: [
-                        Expanded(
-                          flex: 3,
-                          child: PreviewArea(
-                            originalBytes: _originalBytes!,
-                            processedBytes: _processedBytes,
-                            decodedImg: _decodedImg,
-                            imageWidth: _imageWidth,
-                            imageHeight: _imageHeight,
-                            viewMode: _viewMode,
-                            previewBackground: _previewBackground,
-                            customPreviewColor: _customPreviewColor,
-                            isEyedropperActive: _isEyedropperActive,
-                            isProcessing: _isProcessing,
-                            loadingStatus: _getLoadingStatusText(context),
-                            onPickColorAt: _pickColorAt,
-                          ),
-                        ),
-                        Container(width: 1, color: const Color(0xFF334155)),
-                        SizedBox(
-                          width: 380,
-                          child: ControlsPanel(
-                            fileName: _fileName,
-                            imageWidth: _imageWidth,
-                            imageHeight: _imageHeight,
-                            viewMode: _viewMode,
-                            onViewModeChanged: (val) =>
-                                setState(() => _viewMode = val),
-                            selectedColor: _selectedColor,
-                            isEyedropperActive: _isEyedropperActive,
-                            onToggleEyedropper: () => setState(
-                              () => _isEyedropperActive = !_isEyedropperActive,
+                            Container(width: 1, color: const Color(0xFF334155)),
+                            SizedBox(
+                              width: 380,
+                              child: ControlsPanel(
+                                fileName: _fileName,
+                                imageWidth: _imageWidth,
+                                imageHeight: _imageHeight,
+                                viewMode: _viewMode,
+                                onViewModeChanged: (val) =>
+                                    setState(() => _viewMode = val),
+                                selectedColor: _selectedColor,
+                                isEyedropperActive: _isEyedropperActive,
+                                onToggleEyedropper: () => setState(
+                                  () => _isEyedropperActive =
+                                      !_isEyedropperActive,
+                                ),
+                                threshold: _threshold,
+                                onThresholdChanged: (val) =>
+                                    setState(() => _threshold = val),
+                                onThresholdChangeEnd: (_) => _processImage(),
+                                smoothness: _smoothness,
+                                onSmoothnessChanged: (val) =>
+                                    setState(() => _smoothness = val),
+                                onSmoothnessChangeEnd: (_) => _processImage(),
+                                previewBackground: _previewBackground,
+                                onBackgroundChanged: (val) =>
+                                    setState(() => _previewBackground = val),
+                                customPreviewColor: _customPreviewColor,
+                                onCustomColorChanged: (color) =>
+                                    setState(() => _customPreviewColor = color),
+                                processedBytes: _processedBytes,
+                                onExport: _exportImage,
+                                onPickImage: _pickImage,
+                              ),
                             ),
-                            threshold: _threshold,
-                            onThresholdChanged: (val) =>
-                                setState(() => _threshold = val),
-                            onThresholdChangeEnd: (_) => _processImage(),
-                            smoothness: _smoothness,
-                            onSmoothnessChanged: (val) =>
-                                setState(() => _smoothness = val),
-                            onSmoothnessChangeEnd: (_) => _processImage(),
-                            previewBackground: _previewBackground,
-                            onBackgroundChanged: (val) =>
-                                setState(() => _previewBackground = val),
-                            customPreviewColor: _customPreviewColor,
-                            onCustomColorChanged: (color) =>
-                                setState(() => _customPreviewColor = color),
-                            processedBytes: _processedBytes,
-                            onExport: _exportImage,
-                            onPickImage: _pickImage,
-                          ),
-                        ),
-                      ],
-                    )
-                  : Column(
-                      children: [
-                        Expanded(
-                          flex: 5,
-                          child: PreviewArea(
-                            originalBytes: _originalBytes!,
-                            processedBytes: _processedBytes,
-                            decodedImg: _decodedImg,
-                            imageWidth: _imageWidth,
-                            imageHeight: _imageHeight,
-                            viewMode: _viewMode,
-                            previewBackground: _previewBackground,
-                            customPreviewColor: _customPreviewColor,
-                            isEyedropperActive: _isEyedropperActive,
-                            isProcessing: _isProcessing,
-                            loadingStatus: _getLoadingStatusText(context),
-                            onPickColorAt: _pickColorAt,
-                          ),
-                        ),
-                        Container(height: 1, color: const Color(0xFF334155)),
-                        Expanded(
-                          flex: 6,
-                          child: ControlsPanel(
-                            fileName: _fileName,
-                            imageWidth: _imageWidth,
-                            imageHeight: _imageHeight,
-                            viewMode: _viewMode,
-                            onViewModeChanged: (val) =>
-                                setState(() => _viewMode = val),
-                            selectedColor: _selectedColor,
-                            isEyedropperActive: _isEyedropperActive,
-                            onToggleEyedropper: () => setState(
-                              () => _isEyedropperActive = !_isEyedropperActive,
+                          ],
+                        )
+                      : Column(
+                          children: [
+                            Expanded(
+                              flex: 5,
+                              child: PreviewArea(
+                                originalBytes: _originalBytes!,
+                                processedBytes: _processedBytes,
+                                decodedImg: _decodedImg,
+                                imageWidth: _imageWidth,
+                                imageHeight: _imageHeight,
+                                viewMode: _viewMode,
+                                previewBackground: _previewBackground,
+                                customPreviewColor: _customPreviewColor,
+                                isEyedropperActive: _isEyedropperActive,
+                                isProcessing: _isProcessing,
+                                loadingStatus: _getLoadingStatusText(context),
+                                onPickColorAt: _pickColorAt,
+                              ),
                             ),
-                            threshold: _threshold,
-                            onThresholdChanged: (val) =>
-                                setState(() => _threshold = val),
-                            onThresholdChangeEnd: (_) => _processImage(),
-                            smoothness: _smoothness,
-                            onSmoothnessChanged: (val) =>
-                                setState(() => _smoothness = val),
-                            onSmoothnessChangeEnd: (_) => _processImage(),
-                            previewBackground: _previewBackground,
-                            onBackgroundChanged: (val) =>
-                                setState(() => _previewBackground = val),
-                            customPreviewColor: _customPreviewColor,
-                            onCustomColorChanged: (color) =>
-                                setState(() => _customPreviewColor = color),
-                            processedBytes: _processedBytes,
-                            onExport: _exportImage,
-                            onPickImage: _pickImage,
-                          ),
+                            Container(
+                              height: 1,
+                              color: const Color(0xFF334155),
+                            ),
+                            Expanded(
+                              flex: 6,
+                              child: ControlsPanel(
+                                fileName: _fileName,
+                                imageWidth: _imageWidth,
+                                imageHeight: _imageHeight,
+                                viewMode: _viewMode,
+                                onViewModeChanged: (val) =>
+                                    setState(() => _viewMode = val),
+                                selectedColor: _selectedColor,
+                                isEyedropperActive: _isEyedropperActive,
+                                onToggleEyedropper: () => setState(
+                                  () => _isEyedropperActive =
+                                      !_isEyedropperActive,
+                                ),
+                                threshold: _threshold,
+                                onThresholdChanged: (val) =>
+                                    setState(() => _threshold = val),
+                                onThresholdChangeEnd: (_) => _processImage(),
+                                smoothness: _smoothness,
+                                onSmoothnessChanged: (val) =>
+                                    setState(() => _smoothness = val),
+                                onSmoothnessChangeEnd: (_) => _processImage(),
+                                previewBackground: _previewBackground,
+                                onBackgroundChanged: (val) =>
+                                    setState(() => _previewBackground = val),
+                                customPreviewColor: _customPreviewColor,
+                                onCustomColorChanged: (color) =>
+                                    setState(() => _customPreviewColor = color),
+                                processedBytes: _processedBytes,
+                                onExport: _exportImage,
+                                onPickImage: _pickImage,
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                ),
+                if (_isDragging) const DragOverlay(),
+              ],
             ),
-            if (_isDragging) const DragOverlay(),
-          ],
+          ),
         ),
       ),
-    ),
-  ),
-);
+    );
   }
 }

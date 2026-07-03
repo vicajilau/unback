@@ -1,9 +1,16 @@
 {
   "@@locale": "en",
   "appTitle": "Background Remover",
+  "@appTitle": {
+    "description": "Title of the application"
+  },
   "resetTooltip": "Reset adjustments",
+  "@resetTooltip": {
+    "description": "Tooltip for the reset button"
+  },
   "resolution": "Resolution: {w} x {h}",
   "@resolution": {
+    "description": "Label displaying the image resolution",
     "placeholders": {
       "w": {
         "type": "num"
@@ -14,26 +21,84 @@
     }
   },
   "viewMode": "VIEW MODE",
+  "@viewMode": {
+    "description": "Header for the view mode section"
+  },
   "compare": "Compare",
+  "@compare": {
+    "description": "Label for compare view mode"
+  },
   "result": "Result",
+  "@result": {
+    "description": "Label for result view mode"
+  },
   "colorToRemove": "COLOR TO REMOVE",
+  "@colorToRemove": {
+    "description": "Header for color to remove section"
+  },
   "targetBgColor": "Target Background Color",
+  "@targetBgColor": {
+    "description": "Label for the target background color selection"
+  },
   "eyedropperTooltip": "Eyedropper tool",
+  "@eyedropperTooltip": {
+    "description": "Tooltip for the eyedropper tool button"
+  },
   "adjustments": "ADJUSTMENTS",
+  "@adjustments": {
+    "description": "Header for adjustments controls section"
+  },
   "tolerance": "Tolerance",
+  "@tolerance": {
+    "description": "Label for tolerance slider"
+  },
   "smoothness": "Smoothness",
+  "@smoothness": {
+    "description": "Label for smoothness slider"
+  },
   "bgCheck": "BACKGROUND CHECK",
+  "@bgCheck": {
+    "description": "Header for background check section"
+  },
   "grid": "Grid",
+  "@grid": {
+    "description": "Label for grid background preset"
+  },
   "light": "Light",
+  "@light": {
+    "description": "Label for light background preset"
+  },
   "dark": "Dark",
+  "@dark": {
+    "description": "Label for dark background preset"
+  },
   "chromaKey": "CHROMA KEY",
+  "@chromaKey": {
+    "description": "Label for chroma key background preset"
+  },
   "red": "Red",
+  "@red": {
+    "description": "Label for red color"
+  },
   "green": "Green",
+  "@green": {
+    "description": "Label for green color"
+  },
   "blue": "Blue",
+  "@blue": {
+    "description": "Label for blue color"
+  },
   "white": "White",
+  "@white": {
+    "description": "Label for white color"
+  },
   "black": "Black",
+  "@black": {
+    "description": "Label for black color"
+  },
   "previewOnBg": "Preview on {color} background",
   "@previewOnBg": {
+    "description": "A label showing which background color is selected for preview",
     "placeholders": {
       "color": {
         "type": "String"
@@ -41,30 +106,100 @@
     }
   },
   "customBgTooltip": "Choose custom background color",
+  "@customBgTooltip": {
+    "description": "Tooltip for custom background color button"
+  },
   "savePng": "Save Transparent PNG",
+  "@savePng": {
+    "description": "Button text to save the output as a transparent PNG"
+  },
   "openImage": "Open Another Image",
+  "@openImage": {
+    "description": "Button text to open a new image"
+  },
   "customBgTitle": "Custom Background",
+  "@customBgTitle": {
+    "description": "Title for the custom background dialog"
+  },
   "selectBgColor": "Select background color",
+  "@selectBgColor": {
+    "description": "Dialog title to select background color"
+  },
   "selectColorShade": "Select color shade",
+  "@selectColorShade": {
+    "description": "Subtitle to select color shade"
+  },
   "customColorShade": "Custom color shade",
+  "@customColorShade": {
+    "description": "Label for custom color shade input"
+  },
   "presets": "Presets",
+  "@presets": {
+    "description": "Tab or header for preset colors"
+  },
   "wheel": "Wheel",
+  "@wheel": {
+    "description": "Tab or header for the color wheel"
+  },
   "cancel": "Cancel",
+  "@cancel": {
+    "description": "Generic cancel button text"
+  },
   "select": "Select",
+  "@select": {
+    "description": "Generic select button text"
+  },
   "loadImageTitle": "Load Image to Remove Background",
+  "@loadImageTitle": {
+    "description": "Header title inviting user to load an image"
+  },
   "loadImageSubtitle": "Supports PNG, JPG, JPEG and WebP",
+  "@loadImageSubtitle": {
+    "description": "Subtitle showing supported formats"
+  },
   "chooseFile": "Choose File",
+  "@chooseFile": {
+    "description": "Button text to choose a file"
+  },
   "dropImage": "Drop your image here",
+  "@dropImage": {
+    "description": "Text displayed in drag and drop area when hovering"
+  },
   "dropImageSubtitle": "Supports PNG, JPG, JPEG, and WebP formats",
+  "@dropImageSubtitle": {
+    "description": "Subtitle for drag and drop area"
+  },
   "tapToPickColor": "Tap anywhere to pick background color",
+  "@tapToPickColor": {
+    "description": "Instruction text for eyedropper"
+  },
   "zoomTooltipMobile": "Pinch to zoom • Double-tap to quick zoom • Drag to pan",
+  "@zoomTooltipMobile": {
+    "description": "Instruction tooltip for zoom on mobile devices"
+  },
   "zoomTooltipDesktop": "Ctrl + Scroll to zoom • Drag to pan • Double-click to quick zoom",
+  "@zoomTooltipDesktop": {
+    "description": "Instruction tooltip for zoom on desktop devices"
+  },
   "processing": "Processing...",
+  "@processing": {
+    "description": "Generic loading or processing message"
+  },
   "loadingFile": "Loading file...",
+  "@loadingFile": {
+    "description": "Message shown while loading a file"
+  },
   "decodingImage": "Decoding image...",
+  "@decodingImage": {
+    "description": "Message shown while decoding an image"
+  },
   "removingBackground": "Removing background...",
+  "@removingBackground": {
+    "description": "Message shown while removing the background"
+  },
   "errorPickingImage": "Error picking image: {error}",
   "@errorPickingImage": {
+    "description": "Error message when file picker fails",
     "placeholders": {
       "error": {
         "type": "String"
@@ -73,6 +208,7 @@
   },
   "errorLoadingImage": "Error loading image: {error}",
   "@errorLoadingImage": {
+    "description": "Error message when loading the image fails",
     "placeholders": {
       "error": {
         "type": "String"
@@ -81,6 +217,7 @@
   },
   "errorProcessing": "Error processing background removal: {error}",
   "@errorProcessing": {
+    "description": "Error message when background removal fails",
     "placeholders": {
       "error": {
         "type": "String"
@@ -89,6 +226,7 @@
   },
   "errorSaving": "Failed to save image: {error}",
   "@errorSaving": {
+    "description": "Error message when saving the image fails",
     "placeholders": {
       "error": {
         "type": "String"
@@ -97,6 +235,7 @@
   },
   "successSaving": "Image saved successfully: {path}",
   "@successSaving": {
+    "description": "Success message when the image is saved",
     "placeholders": {
       "path": {
         "type": "String"
@@ -104,8 +243,23 @@
     }
   },
   "successColorPicked": "Color picked successfully!",
+  "@successColorPicked": {
+    "description": "Success message when a color is picked using the eyedropper"
+  },
   "unsupportedFormat": "Unsupported file format. Please drop PNG, JPG, JPEG, or WebP.",
+  "@unsupportedFormat": {
+    "description": "Error message for unsupported formats"
+  },
   "saveDialogTitle": "Save Transparent Image",
+  "@saveDialogTitle": {
+    "description": "Title of the save file dialog"
+  },
   "original": "Original",
-  "processed": "Processed"
+  "@original": {
+    "description": "Label for the original image preview"
+  },
+  "processed": "Processed",
+  "@processed": {
+    "description": "Label for the processed image preview"
+  }
 }
