@@ -41,7 +41,7 @@ dependencies:
   desktop_drop: ^0.7.1
   cross_file: ^0.3.4
   web: ^1.1.1
-  flex_color_picker: ^3.8.0
+  flex_color_picker: ^4.0.0
   pasteboard: ^0.5.0
   
 dev_dependencies:
